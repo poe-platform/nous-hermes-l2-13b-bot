@@ -29,7 +29,7 @@ class NousHermesLlama213B(PoeBot):
     def construct_prompt(self, query: QueryRequest):
         prompt = "\n"
         # remove system prompt for now.
-        # prompt += f"<system>: {DEFAULT_SYSTEM_PROMPT}\n"
+        prompt += f"<system>: {DEFAULT_SYSTEM_PROMPT}\n"
         for message in query.query:
             if message.role == "user":
                 prompt += f"<human>: {message.content}\n"
@@ -52,7 +52,7 @@ class NousHermesLlama213B(PoeBot):
             "temperature": 0.7,
             "top_p": 0.7,
             "top_k": 50,
-            "repetition_penalty": 1
+            "repetition_penalty": 1,
         }
         headers = {
             "accept": "application/json",
