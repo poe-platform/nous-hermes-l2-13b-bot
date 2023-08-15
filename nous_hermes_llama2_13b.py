@@ -11,15 +11,14 @@ from fastapi_poe.types import QueryRequest
 from sse_starlette.sse import ServerSentEvent
 
 BASE_URL = "https://api.together.xyz/inference"
-DEFAULT_SYSTEM_PROMPT = """\
-You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while \
-being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, \
-dangerous, or illegal content. Please ensure that your responses are socially unbiased and \
-positive in nature.
+BASE_PROMPT = """"
+### Instructions:
+ Hi!
 
-If a question does not make any sense, or is not factually coherent, explain why instead of \
-answering something not correct. If you don't know the answer to a question, please don't \
-share false information."""
+### Response:
+ My name is NousHermesBot and I am programmed to be helpful, polite, honest, and friendly.
+
+"""
 
 
 @dataclass
@@ -28,18 +27,17 @@ class NousHermesLlama213B(PoeBot):
 
     def construct_prompt(self, query: QueryRequest):
         prompt = "\n"
-        # remove system prompt for now.
-        prompt += f"<system>: {DEFAULT_SYSTEM_PROMPT}\n"
+        prompt = BASE_PROMPT
         for message in query.query:
             if message.role == "user":
-                prompt += f"<human>: {message.content}\n"
+                prompt += f"### Instructions:\n {message.content}\n\n"
             elif message.role == "bot":
-                prompt += f"<bot>: {message.content}\n"
+                prompt += f"### Response:\n {message.content}\n\n"
             elif message.role == "system":
                 pass
             else:
                 raise ValueError(f"unknown role {message.role}.")
-        prompt += "<bot>:"
+        prompt += "### Response:\n"
         return prompt
 
     async def query_together_ai(self, prompt) -> str:
@@ -47,7 +45,7 @@ class NousHermesLlama213B(PoeBot):
             "model": "NousResearch/Nous-Hermes-Llama2-13b",
             "prompt": prompt,
             "max_tokens": 1000,
-            "stop": ["</s>", "<human>:"],
+            "stop": ["### Instructions:"],
             "stream_tokens": True,
             "temperature": 0.7,
             "top_p": 0.7,
