@@ -1,6 +1,6 @@
 # Nous Hermes Llama-2 13B Bot
 
-Chatbot powered by the Nous-Hermes-13B model.
+Chatbot powered by the Nous-Hermes-Llama2-13B model.
 
 ## How do I run this myself?
 
