@@ -13,5 +13,5 @@ stub = Stub("nous-hermes-llama2-13b-app")
 @asgi_app()
 def fastapi_app():
     bot = NousHermesLlama213B(TOGETHER_API_KEY=os.environ["TOGETHER_API_KEY"])
-    app = make_app(bot, api_key=os.environ["POE_API_KEY"])
+    app = make_app(bot, access_key=os.environ["POE_ACCESS_KEY"])
     return app
