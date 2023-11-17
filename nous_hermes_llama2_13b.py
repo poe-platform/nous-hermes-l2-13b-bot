@@ -44,7 +44,7 @@ class NousHermesLlama213B(PoeBot):
             "model": "NousResearch/Nous-Hermes-Llama2-13b",
             "prompt": prompt,
             "max_tokens": 1000,
-            "stop": ["### Instructions:"],
+            "stop": ["### Instructions:", "</s>"],
             "stream_tokens": True,
             "temperature": 0.7,
             "top_p": 0.7,
